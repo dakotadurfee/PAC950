@@ -1,5 +1,5 @@
 from hashTable import chainingHash
-
+from package import Package
 
 class Truck:
     def __init__(self, distanceData, addressData):
@@ -19,33 +19,41 @@ class Truck:
 
         return float(d)
 
-    def getMinDistance(self, startingPoint, packages, exclude=None):
+    def getMinDistance(self, startingPoint, packages, myHash, exclude=None):
         distance = 50
+        pack = None
         for package in packages:
             for p in package:
                 if p[1].getPackageAddress() != startingPoint and exclude is None:
                     if float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(distance):
-                        #print('Distance:', float(distance))
-                        #print('Returned distance:', float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())))
+                        print('Distance:', float(distance))
+                        print('Returned distance:', float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())))
                         pack = p[1]
                         distance = self.getDistanceBetween(startingPoint, p[1].getPackageAddress())
 
         self.totalDistance += distance
-        print('totalDistance +=', self.getDistanceBetween(startingPoint, p[1].getPackageAddress()))
+        print('Hash Map:', myHash.getTable())
+        #print('totalDistance +=', self.getDistanceBetween(startingPoint, p[1].getPackageAddress()))
         return pack
 
     def loadTruck(self, startingPoint, hashMap):
         start = startingPoint
 
         while len(self.truck1Packages) < 16:
-            package = self.getMinDistance(start, hashMap.getTable())
-            if package.getPackageNote() != 'Can only be on truck 2':
-                self.truck1Packages.append(package)
+            package = self.getMinDistance(start, hashMap.getTable(), hashMap)
+            #if package.getPackageNote() != 'Can only be on truck 2':
+            #    self.truck1Packages.append(package)
+            #    self.truck1Distances.append(self.getDistanceBetween(start, package.getPackageAddress()))
+            #    #print('In loadTruck, Distance:', self.getDistanceBetween(start, package.getPackageAddress()))
+            #    hashMap.remove(package.getPackageID())
+            if package.getPackageNote() == 'Must be delivered with 13, 15' and len(self.truck1Packages) < 14:
+                package = hashMap.search(package.getPackageID())
+                self.truck1Distances.append(package)
                 self.truck1Distances.append(self.getDistanceBetween(start, package.getPackageAddress()))
-                #print('In loadTruck, Distance:', self.getDistanceBetween(start, package.getPackageAddress()))
                 hashMap.remove(package.getPackageID())
             else:
-                package = self.getMinDistance(start, hashMap.getTable(), package)
+                package = self.getMinDistance(start, hashMap.getTable(), package, hashMap)
+                print('package:', package.getPackageAddress())
                 self.truck1Packages.append(package)
                 print('In loadTruck else, Distance:', self.getDistanceBetween(start,package.getPackageAddress()))
                 hashMap.remove(package.getPackageID())
@@ -54,7 +62,7 @@ class Truck:
 
         start = startingPoint
         while len(self.truck2Packages) < 16:
-            package = self.getMinDistance(start, hashMap.getTable())
+            package = self.getMinDistance(start, hashMap.getTable(), hashMap)
             self.truck2Packages.append(package)
             self.truck2Distances.append(self.getDistanceBetween(start, package.getPackageAddress()))
             hashMap.remove(package.getPackageID())

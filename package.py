@@ -2,8 +2,8 @@ from hashTable import chainingHash
 
 
 class Package:
-    def __init__(self, packageID, deliveryAddress, deliveryDeadline, deliveryCity, deliveryZip, packageWeight,
-                 specialNote):
+    def __init__(self, packageID = 0, deliveryAddress = None, deliveryDeadline = None, deliveryCity = None, deliveryZip = None, packageWeight = 0,
+                 specialNote = None):
         self.packageID = packageID
         self.deliveryAddress = deliveryAddress
         self.deliveryDeadline = deliveryDeadline
