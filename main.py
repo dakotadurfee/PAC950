@@ -45,10 +45,16 @@ loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
 loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
 loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
 
-print('Address:', addressData)
+#print('Address:', addressData)
 
 truck = Truck(distanceData, addressData)
 packages = myHash.getTable()
+i = 0
+#for row in packages:
+#    for column in row:
+#        print('ID:', column[1].getPackageID())
+#        print('Address:', column[1].getPackageAddress())
+#        i += 1
 
 #for row in packages:
 #   for column in row:
@@ -59,8 +65,8 @@ packages = myHash.getTable()
 startingPoint = addressData[0]
 truck.loadTruck(startingPoint, myHash)
 
-#print('Truck 1:')
-#truck.getTruck1()
+print('Truck 1:')
+truck.getTruck1()
 #print('Truck 2:')
 #truck.getTruck2()
 
