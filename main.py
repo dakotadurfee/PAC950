@@ -60,9 +60,9 @@ def loadAddressData(fileName):
 #    return distance
 
 
-loadPackageData('C:/Users/peral/PycharmProjects/pythonProject/CSVs/package.csv')
-loadDistanceData('C:/Users/peral/PycharmProjects/pythonProject/CSVs/distance.csv')
-loadAddressData('C:/Users/peral/PycharmProjects/pythonProject/CSVs/address.csv')
+loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
+loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
+loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
 
 truck = Truck(distanceData, addressData)
 packages = myHash.getTable()
