@@ -74,3 +74,5 @@ print('Distance:', truck.getTotalDistance())
 print('truck 1 distances:', truck.getTruck1Distance())
 print('truck 2 distances:', truck.getTruck2Distance())
 
+#Finished: No duplicate packages in truck 1 after first load. added if statement to add package if special note says to add with packages 13, 15 and if there is room in truck.
+#ToDo finish if statement from above line. Finish adding in special parameters from package notes.
