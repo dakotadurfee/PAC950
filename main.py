@@ -41,25 +41,6 @@ def loadAddressData(fileName):
             addressData[i] = address[1][1:]
             i += 1
 
-
-# def getDistanceBetween(address1, address2):
-#    d = distanceData[addressData.index(address1)][addressData.index(address2)]
-#    if d == '':
-#        d = distanceData[addressData.index(address2)][addressData.index(address1)]
-#
-#    return float(d)
-#
-#
-# def getMinDistance(startingPoint, packages):
-#    distance = 50
-#    for package in packages:
-#        for p in package:
-#            if p[1].getPackageAddress() != startingPoint:
-#                if float(getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(distance):
-#                    distance = getDistanceBetween(startingPoint, p[1].getPackageAddress())
-#    return distance
-
-
 loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
 loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
 loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
@@ -82,6 +63,8 @@ truck.loadTruck(startingPoint, myHash)
 #truck.getTruck2()
 
 print('Distance:', truck.getTotalDistance())
+print('truck 1 distances:', truck.getTruck1Distance())
+print('truck 2 distances:', truck.getTruck2Distance())
+truck.getTruck1()
 
-# FINISHED: loading truck1 based off packages that can't be on truck 2
-# TODO: finish loading truck2 and finish loading trucks based off other conditions.
+
