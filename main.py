@@ -41,38 +41,52 @@ def loadAddressData(fileName):
             addressData[i] = address[1][1:]
             i += 1
 
-loadPackageData('/CSVs/package.csv')
-loadDistanceData('/CSVs/distance.csv')
-loadAddressData('/CSVs/address.csv')
 
-#print('Address:', addressData)
+loadPackageData('C:/Users/peral/PycharmProjects/PAC950/CSvs/package.csv')
+loadDistanceData('C:/Users/peral/PycharmProjects/PAC950/CSVs/distance.csv')
+loadAddressData('C:/Users/peral/PycharmProjects/PAC950/CSVs/address.csv')
+
+# print('Address:', addressData)
 
 truck = Truck(distanceData, addressData)
 packages = myHash.getTable()
 i = 0
-#for row in packages:
+# for row in packages:
 #    for column in row:
 #        print('ID:', column[1].getPackageID())
 #        print('Address:', column[1].getPackageAddress())
 #        i += 1
 
-#for row in packages:
+# for row in packages:
 #   for column in row:
 #       if column[1].getPackageNote() != '':
 #           print('package ID:', column[1].getPackageID())
 #           print('package Note:', column[1].getPackageNote())
 
 startingPoint = addressData[0]
-truck.loadTruck(startingPoint, myHash)
+# truck.loadTruck(startingPoint, myHash)
 
-print('Truck 1:')
-truck.getTruck1()
-#print('Truck 2:')
-#truck.getTruck2()
+# print('Truck 1:')
+# truck.getTruck1()
+# print('Truck 2:')
+# truck.getTruck2()
 
-print('Distance:', truck.getTotalDistance())
-print('truck 1 distances:', truck.getTruck1Distance())
-print('truck 2 distances:', truck.getTruck2Distance())
+# print('Distance:', truck.getTotalDistance())
+# print('truck 1 distances:', truck.getTruck1Distance())
+# print('truck 2 distances:', truck.getTruck2Distance())
 
-#Finished: No duplicate packages in truck 1 after first load. added if statement to add package if special note says to add with packages 13, 15 and if there is room in truck.
-#ToDo finish if statement from above line. Finish adding in special parameters from package notes.
+print('Empty: ', myHash.isEmpty())
+removeList = []
+for row in myHash.getTable():
+    for column in row:
+        removeList.append(column[0])
+
+for r in removeList:
+    myHash.remove(r)
+
+print(myHash.getTable())
+
+print('Empty:', myHash.isEmpty())
+
+# Finished: verified isEmpty() function works properly from hashTable class.
+# ToDo: implement isEmpty() function in loadTruck() while statement. Find a way to group packages that must be loaded together before load truck() executes.

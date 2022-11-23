@@ -1,7 +1,9 @@
 class chainingHash:
     def __init__(self, initial_capacity=10):
         # initialize the hash table with empty bucket list entries.
-        self.table = [[] for i in range(initial_capacity)]
+        self.table = []
+        for i in range(initial_capacity):
+            self.table.append([])
 
     # Inserts a new item into the hash table.
     ''' 
@@ -96,6 +98,17 @@ class chainingHash:
             for pack in package:
                 print(pack)
                 i += 1
+                print('i:', i)
 
     def getTable(self):
         return self.table
+
+    def isEmpty(self):
+        empty = True
+        for row in self.table:
+            if len(row) > 0:
+                empty = False
+
+        return empty
+
+

@@ -1,6 +1,7 @@
 from hashTable import chainingHash
 from package import Package
 
+
 class Truck:
     def __init__(self, distanceData, addressData):
         self.truck1Packages = []
@@ -12,7 +13,7 @@ class Truck:
         self.totalDistance = 0
 
     def getDistanceBetween(self, address1, address2):
-        #print('in DistanceBetween')
+        # print('in DistanceBetween')
 
         d = self.distanceData[self.addressData.index(address1)][self.addressData.index(address2)]
         if d == '':
@@ -31,13 +32,14 @@ class Truck:
                         pack = p[1]
                         distance = self.getDistanceBetween(startingPoint, p[1].getPackageAddress())
                         start = p[1].getPackageAddress()
-                elif float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(distance) and p[1] != exclude and p[1].getPackageAddress() != start:
+                elif float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(distance) and p[
+                    1] != exclude and p[1].getPackageAddress() != start:
                     pack = p[1]
                     distance = self.getDistanceBetween(startingPoint, p[1].getPackageAddress())
                     start = p[1].getPackageAddress()
 
         self.totalDistance += distance
-        #print('totalDistance +=', self.getDistanceBetween(startingPoint, p[1].getPackageAddress()))
+        # print('totalDistance +=', self.getDistanceBetween(startingPoint, p[1].getPackageAddress()))
         return pack
 
     def loadTruck(self, startingPoint, hashMap):
