@@ -41,9 +41,9 @@ def loadAddressData(fileName):
             addressData[i] = address[1][1:]
             i += 1
 
-loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
-loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
-loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
+loadPackageData('/CSVs/package.csv')
+loadDistanceData('/CSVs/distance.csv')
+loadAddressData('/CSVs/address.csv')
 
 #print('Address:', addressData)
 
