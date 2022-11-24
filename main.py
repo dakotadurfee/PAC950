@@ -42,9 +42,9 @@ def loadAddressData(fileName):
             i += 1
 
 
-loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
-loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
-loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
+loadPackageData('C:/Users/peral/PycharmProjects/PAC950/CSVs/package.csv')
+loadDistanceData('C:/Users/peral/PycharmProjects/PAC950/CSVs/distance.csv')
+loadAddressData('C:/Users/peral/PycharmProjects/PAC950/CSVs/address.csv')
 
 # print('Address:', addressData)
 
@@ -64,6 +64,7 @@ i = 0
 #           print('package Note:', column[1].getPackageNote())
 
 startingPoint = addressData[0]
+print('1st load:')
 truck.loadTruck(startingPoint, myHash)
 
 print('Truck 1:')
@@ -71,16 +72,29 @@ truck.getTruck1(startingPoint)
 print('Truck 2:')
 truck.getTruck2(startingPoint)
 #
-#print('Hash table:', myHash.getTable())
+print('Hash table:', myHash.getLength())
 truck.deliverPackages(startingPoint)
-print('T1 distance:', truck.getT1Distance())
-print('T2 distance:', truck.getT2Distance())
+print('after delivery:')
+print('Truck 1:')
+truck.getTruck1(startingPoint)
+print('Truck 2:')
+truck.getTruck2(startingPoint)
+print('second load:')
+truck.loadTruck(startingPoint, myHash)
+print('Truck 1:')
+truck.getTruck1(startingPoint)
+print('Truck 2:')
+truck.getTruck2(startingPoint)
+truck.deliverPackages(startingPoint)
+print('T1 Distance:', truck.getT1Distance())
+print('T2 Distance:', truck.getT2Distance())
+print('Hash table:', myHash.getTable())
 
-print('Distance:', truck.getTotalDistance())
+#print('Distance:', truck.getTotalDistance())
 # print('truck 1 distances:', truck.getTruck1Distance())
 # print('truck 2 distances:', truck.getTruck2Distance())
 
 
 
-# Finished: added packages based on special notes except for the packages that arrive to the depot late. delivered packages and kept track of distances traveled for both trucks
-# ToDo: send the trucks back to the depot and reload them. Send them out to deliver again. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html
+# Finished: loaded trucks for 2nd time and delivered all packages
+# ToDo: Get total combined miles under 140. Currently at 149.7. Loading the buddy packages isn't optimal yet. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html

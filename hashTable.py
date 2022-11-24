@@ -111,4 +111,11 @@ class chainingHash:
 
         return empty
 
+    def getLength(self):
+        i = 0
+        for row in self.table:
+            for column in row:
+                i += 1
+        return i
+
 
