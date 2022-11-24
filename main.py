@@ -67,11 +67,14 @@ startingPoint = addressData[0]
 truck.loadTruck(startingPoint, myHash)
 
 print('Truck 1:')
-truck.getTruck1()
+truck.getTruck1(startingPoint)
 print('Truck 2:')
-truck.getTruck2()
+truck.getTruck2(startingPoint)
 #
 #print('Hash table:', myHash.getTable())
+truck.deliverPackages(startingPoint)
+print('T1 distance:', truck.getT1Distance())
+print('T2 distance:', truck.getT2Distance())
 
 print('Distance:', truck.getTotalDistance())
 # print('truck 1 distances:', truck.getTruck1Distance())
@@ -79,5 +82,5 @@ print('Distance:', truck.getTotalDistance())
 
 
 
-# Finished: verified isEmpty() function works properly from hashTable class.
-# ToDo: implement isEmpty() function in loadTruck() while statement. Find a way to group packages that must be loaded together before load truck() executes.
+# Finished: added packages based on special notes except for the packages that arrive to the depot late. delivered packages and kept track of distances traveled for both trucks
+# ToDo: send the trucks back to the depot and reload them. Send them out to deliver again. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html

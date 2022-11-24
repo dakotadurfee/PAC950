@@ -70,11 +70,11 @@ class Truck:
                 self.truck1Packages.append(package)
                 self.truck1Distances.append(self.getDistanceBetween(start, package.getPackageAddress()))
                 hashMap.remove(package.getPackageID())
-            elif package.getPackageNote() == 'Delayed on flight---will not arrive to depot until 9:05 am':
-                #TODO: create if statement using timedelta objects to see if package can be loaded
-                package = self.getMinDistance(start, hashMap.getTable(), package)
-                self.truck1Packages.append(package)
-                self.truck1Distances.append(self.getDistanceBetween(start, package.getPackageAddress()))
+            #elif package.getPackageNote() == 'Delayed on flight---will not arrive to depot until 9:05 am':
+            #    #TODO: create if statement using timedelta objects to see if package can be loaded
+            #    package = self.getMinDistance(start, hashMap.getTable(), package)
+            #    self.truck1Packages.append(package)
+            #    self.truck1Distances.append(self.getDistanceBetween(start, package.getPackageAddress()))
             else:
                 package = self.getMinDistance(start, hashMap.getTable(), package)
                 self.truck1Packages.append(package)
@@ -91,18 +91,42 @@ class Truck:
             hashMap.remove(package.getPackageID())
             start = self.truck2Packages[-1].getPackageAddress()
 
-    def deliveryPackages(self):
-
-
-    def getTruck1(self):
-        print('Length:', len(self.truck1Packages))
+    def deliverPackages(self, startingPoint):
+        start = startingPoint
         for package in self.truck1Packages:
-            print('Package Note:', package.getPackageNote())
+            d = self.getDistanceBetween(start, package.getPackageAddress())
+            self.traveledT1 += d
+            start = package.getPackageAddress()
 
-    def getTruck2(self):
-        print('Length:', len(self.truck2Packages))
+        start = startingPoint
         for package in self.truck2Packages:
-            print('Package Note:', package.getPackageNote())
+            d = self.getDistanceBetween(start, package.getPackageAddress())
+            self.traveledT2 += d
+            start = package.getPackageAddress()
+
+    def getTruck1(self, startingPoint):
+        start = startingPoint
+        for package in self.truck1Packages:
+            print('Distance:', self.getDistanceBetween(start, package.getPackageAddress()))
+            start = package.getPackageAddress()
+        #print('Length:', len(self.truck1Packages))
+        #for package in self.truck1Packages:
+        #    print('Package ID:', package.getPackageID())
+
+    def getTruck2(self, startingPoint):
+        start = startingPoint
+        for package in self.truck2Packages:
+            print('Distance:', self.getDistanceBetween(start, package.getPackageAddress()))
+            start = package.getPackageAddress()
+        #print('Length:', len(self.truck2Packages))
+        #for package in self.truck2Packages:
+        #    print('Package ID:', package.getPackageID())
+
+    def getT1Distance(self):
+        return self.traveledT1
+
+    def getT2Distance(self):
+        return self.traveledT2
 
     def getTotalDistance(self):
         return self.totalDistance
