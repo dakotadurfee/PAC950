@@ -42,9 +42,9 @@ def loadAddressData(fileName):
             i += 1
 
 
-loadPackageData('C:/Users/peral/PycharmProjects/PAC950/CSVs/package.csv')
-loadDistanceData('C:/Users/peral/PycharmProjects/PAC950/CSVs/distance.csv')
-loadAddressData('C:/Users/peral/PycharmProjects/PAC950/CSVs/address.csv')
+loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
+loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
+loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
 
 # print('Address:', addressData)
 
@@ -72,7 +72,7 @@ truck.getTruck1(startingPoint)
 print('Truck 2:')
 truck.getTruck2(startingPoint)
 #
-print('Hash table:', myHash.getLength())
+#print('Hash table:', myHash.getLength())
 truck.deliverPackages(startingPoint)
 
 print('after delivery:')
@@ -81,17 +81,17 @@ print('Truck 1:')
 truck.getTruck1(startingPoint)
 print('Truck 2:')
 truck.getTruck2(startingPoint)
-print('second load:')
+#print('second load:')
 
 truck.loadTruck(startingPoint, myHash)
-print('Truck 1:')
-truck.getTruck1(startingPoint)
-print('Truck 2:')
-truck.getTruck2(startingPoint)
+#print('Truck 1:')
+#truck.getTruck1(startingPoint)
+#print('Truck 2:')
+#truck.getTruck2(startingPoint)
 
 truck.deliverPackages(startingPoint)
-print('T1 Distance:', truck.getT1Distance())
-print('T2 Distance:', truck.getT2Distance())
+#print('T1 Distance:', truck.getT1Distance())
+#print('T2 Distance:', truck.getT2Distance())
 
 print('Hash table:', myHash.getTable())
 
