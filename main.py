@@ -41,7 +41,6 @@ def loadAddressData(fileName):
             addressData[i] = address[1][1:]
             i += 1
 
-
 loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
 loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
 loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
@@ -67,26 +66,21 @@ startingPoint = addressData[0]
 print('1st load:')
 truck.loadTruck(startingPoint, myHash)
 
-print('Truck 1:')
-truck.getTruck1(startingPoint)
-print('Truck 2:')
-truck.getTruck2(startingPoint)
-#
-#print('Hash table:', myHash.getLength())
+
+#truck.sortTruckPackages(startingPoint)
+truck.checkDuplicates()
+
 truck.deliverPackages(startingPoint)
 
-print('after delivery:')
-
-print('Truck 1:')
-truck.getTruck1(startingPoint)
-print('Truck 2:')
-truck.getTruck2(startingPoint)
+print('Truck 1 distances:', truck.getT1Distance())
+print('Truck 2 distance:', truck.getT2Distance())
+#print('after delivery:')
 #print('second load:')
 
 truck.loadTruck(startingPoint, myHash)
-#print('Truck 1:')
+#print('Truck 1 IDs:')
 #truck.getTruck1(startingPoint)
-#print('Truck 2:')
+#print('Truck 2 IDs:')
 #truck.getTruck2(startingPoint)
 
 truck.deliverPackages(startingPoint)
@@ -96,10 +90,12 @@ truck.deliverPackages(startingPoint)
 print('Hash table:', myHash.getTable())
 
 print('Distance:', truck.getTotalDistance())
+print('truck 1 total distance:', truck.getT1Distance())
+print('truck 2 total distance:', truck.getT2Distance())
 print('truck 1 distances:', truck.getTruck1Distance())
 print('truck 2 distances:', truck.getTruck2Distance())
 
 
 
-# Finished: created if statement to optimally load buddy packages. program wont run now.
-# ToDo: Get total combined miles under 140. Currently at 149.7. Fix error in program. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html
+# Finished: added function to sort packages already in truck
+# ToDo: Get total combined miles under 140. Currently at 145.2. Call function to check each package ID loaded in trucks and find which packages aren't loaded optimally. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html
