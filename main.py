@@ -54,12 +54,11 @@ packages = myHash.getTable()
 startingPoint = addressData[0]
 print('1st load:')
 truck.loadTruck(startingPoint, myHash)
+pack = truck.getPackages()
 
 truck.checkDuplicates()
 
-packs = truck.getpackages()
-for p in packs:
-    print('p Note:', p.getPackageNote())
+packs = truck.getPackages()
 
 truck.deliverPackages(startingPoint)
 
@@ -69,7 +68,8 @@ print('Truck 2 distance:', truck.getT2Distance())
 print('second load:')
 
 truck.loadTruck(startingPoint, myHash)
-
+truck.checkDuplicates()
+packs = truck.getPackages()
 
 # print('Truck 1 IDs:')
 # truck.getTruck1(startingPoint)

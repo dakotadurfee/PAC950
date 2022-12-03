@@ -128,8 +128,9 @@ class Truck:
                 for column in row:
                     if column[1].getPackageNote() == 'Can only be on truck 2':
                         self.truck2Packages.append(column[1])
-                        hashMap.remove(column[1].getPackageID())
                         start = column[1].getPackageAddress()
+            for p in self.truck2Packages:
+                hashMap.remove(p.getPackageID())
             while len(self.truck2Packages) < 4 and hashMap.isEmpty() is not True:
                 package = self.getMinDistance(start, hashMap.getTable())
                 self.truck2Packages.append(package)
@@ -146,9 +147,7 @@ class Truck:
         start = startingPoint
         while len(self.truck1Packages) > 0:
             package = self.getMinDistance(start, self.truck1Packages, None, 'yes')
-            print('from address:', start, ' to address:', package.getPackageAddress())
             self.traveledT1 += self.getDistanceBetween(start, package.getPackageAddress())
-            print('distance traveled:', self.getDistanceBetween(start, package.getPackageAddress()))
             self.truck1Packages.remove(package)
             start = package.getPackageAddress()
 
@@ -192,7 +191,7 @@ class Truck:
     def getTotalDistance(self):
         return self.traveledT1 + self.traveledT2
 
-    def getpackages(self):
+    def getPackages(self):
         return self.truck1Packages
 
     def checkDuplicates(self):
