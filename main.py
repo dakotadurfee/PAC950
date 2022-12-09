@@ -42,51 +42,54 @@ def loadAddressData(fileName):
             i += 1
 
 
-loadPackageData('C:/Users/peral/PycharmProjects/PAC950/CSVs/package.csv')
-loadDistanceData('C:/Users/peral/PycharmProjects/PAC950/CSVs/distance.csv')
-loadAddressData('C:/Users/peral/PycharmProjects/PAC950/CSVs/address.csv')
+loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
+loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
+loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
 
 # print('Address:', addressData)
 
 truck = Truck(distanceData, addressData)
-packages = myHash.getTable()
+
 
 startingPoint = addressData[0]
 print('1st load:')
 truck.loadTruck(startingPoint, myHash)
-pack = truck.getPackages()
 
 truck.checkDuplicates()
-
-packs = truck.getPackages()
-
-truck.deliverPackages(startingPoint)
+packs = truck.getT1Packages()
+for p in packs:
+    print('p ID:', p.getPackageID())
+print('truck 2:')
+packs = truck.getT2Packages()
+for p in packs:
+    print('p ID:', p.getPackageID())
+truck.deliverPackages(startingPoint, myHash)
 
 print('Truck 1 distances:', truck.getT1Distance())
 print('Truck 2 distance:', truck.getT2Distance())
 
 print('second load:')
-
 truck.loadTruck(startingPoint, myHash)
 truck.checkDuplicates()
-packs = truck.getPackages()
+packs = truck.getT1Packages()
+for p in packs:
+    print('p ID:', p.getPackageID())
 
-# print('Truck 1 IDs:')
-# truck.getTruck1(startingPoint)
-# print('Truck 2 IDs:')
-# truck.getTruck2(startingPoint)
-
-truck.deliverPackages(startingPoint)
+packs = truck.getT2Packages()
+for p in packs:
+    print('p ID:', p.getPackageID())
+truck.deliverPackages(startingPoint, myHash)
 print('T1 Distance:', truck.getT1Distance())
 print('T2 Distance:', truck.getT2Distance())
 
 # print('Hash table:', myHash.getTable())
 #
 print('Total Distance:', truck.getTotalDistance())
-print('truck 1 total distance:', truck.getT1Distance())
-print('truck 2 total distance:', truck.getT2Distance())
-# print('truck 1 distances:', truck.getTruck1Distance())
-# print('truck 2 distances:', truck.getTruck2Distance())
 
+packages = myHash.getTable()
+i = 0
+for pack in packages:
+    for p in pack:
+        print('pID:', p[1].getPackageID(), p[1].getDeliveryStatus())
 # Finished: got total combined miles under 140.
 # ToDo: check if packages with special note: "can only be loaded on truck 2" are only on truck 2. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html

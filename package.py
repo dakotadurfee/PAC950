@@ -13,6 +13,7 @@ class Package:
         self.specialNote = specialNote
         self.deliveryStatus = False
         self.packageState = 'UT'
+        self.deliveryStatus = 'at the hub'
 
     def getPackageID(self):
         return self.packageID
@@ -20,5 +21,14 @@ class Package:
     def getPackageAddress(self):
         return self.deliveryAddress
 
+    def setPackageAddress(self, address):
+        self.deliveryAddress = address
+
     def getPackageNote(self):
         return self.specialNote
+
+    def setDeliveryStatus(self, status):
+        self.deliveryStatus = status
+
+    def getDeliveryStatus(self):
+        return self.deliveryStatus
