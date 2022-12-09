@@ -86,38 +86,16 @@ class Truck:
             while len(self.truck1Packages) < 16:
                 package = self.getMinDistance(start, hashMap.getTable())
                 exclude = []
-                if package.getDeliveryStatus() != 'at the hub':
-                    while package.getDeliveryStatus() != 'at the hub':
-                        exclude.append(package)
-                        package = self.getMinDistance(start, hashMap.getTable(), exclude)
+                while package.getDeliveryStatus() != 'at the hub':
+                    exclude.append(package)
+                    package = self.getMinDistance(start, hashMap.getTable(), exclude)
                     start = package.getPackageAddress()
                 exclude = []
 
-                if package.getPackageNote() == 'Can only be on truck 2' or package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[:5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
-                    while package.getPackageNote() == 'Can only be on truck 2' or package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[:5] == 'Wrong':
-                        exclude.append(package)
-                        package = self.getMinDistance(start, hashMap.getTable(), exclude)
-                if package.getPackageNote()[:7] == 'Delayed' and self.numLoads <= 1:
-                    while package.getPackageNote()[:7] == 'Delayed':
-                        exclude.append(package)
-                        package = self.getMinDistance(start, hashMap.getTable(), exclude)
-                    self.truck1Packages.append(package)
-                    start = package.getPackageAddress()
-                    #hashMap.remove(package.getPackageID())
-                    package.setDeliveryStatus('en route')
-                elif package.getPackageNote()[:5] == 'Wrong':
+                while package.getPackageNote() == 'Can only be on truck 2' or package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[:5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
-                    self.truck1Packages.append(package)
-                    start = package.getPackageAddress()
-                    #hashMap.remove(package.getPackageID())
-                    package.setDeliveryStatus('en route')
-                elif package.getPackageNote()[:5] == 'Wrong':
-                    self.truck1Packages.append(package)
-                    start = package.getPackageAddress()
-                    #hashMap.remove(package.getPackageID())
-                    package.setDeliveryStatus('en route')
-                elif package in buddyPackages:
+                if package in buddyPackages:
                     self.truck1Packages.append(package)
                     buddyPackages.remove(package)
                     #hashMap.remove(package.getPackageID())
@@ -139,43 +117,32 @@ class Truck:
             start = startingPoint
             while len(self.truck2Packages) < 16:
                 package = self.getMinDistance(start, hashMap.getTable())
-                if package.getDeliveryStatus() != 'at the hub':
-                    while package.getDeliveryStatus() != 'at the hub':
-                        exclude.append(package)
-                        package = self.getMinDistance(start, hashMap.getTable(), exclude)
+                while package.getDeliveryStatus() != 'at the hub':
+                    exclude.append(package)
+                    package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 exclude = []
 
-                if package.getPackageNote()[:7] == 'Delayed':
-                    while package.getPackageNote()[:7] == 'Delayed' and package.getPackageNote()[:5] != 'Wrong':
-                        exclude.append(package)
-                        package = self.getMinDistance(start, hashMap.getTable(), exclude)
-                    self.truck2Packages.append(package)
-                    start = package.getPackageAddress()
-                    #hashMap.remove(package.getPackageID())
-                    package.setDeliveryStatus('en route')
-                elif package.getPackageNote()[:5] == 'Wrong':
-                    while package.getPackageNote()[:5] == 'Wrong' or package.getPackageNote()[:7] == 'Delayed':
-                        exclude.append(package)
-                        package = self.getMinDistance(start, hashMap.getTable(), exclude)
-                    self.truck2Packages.append(package)
-                    start = package.getPackageAddress()
-                    package.setDeliveryStatus('en route')
-                else:
-                    self.truck2Packages.append(package)
-                    start = package.getPackageAddress()
-                    package.setDeliveryStatus('en route')
+                while package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[:5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
+                    exclude.append(package)
+                    package = self.getMinDistance(start, hashMap.getTable(), exclude)
+                self.truck2Packages.append(package)
+                start = package.getPackageAddress()
+                #hashMap.remove(package.getPackageID())
+                package.setDeliveryStatus('en route')
 
         else:
             for row in hashMap.getTable():
                 for column in row:
-                    if column[1].getPackageNote() == 'Can only be on truck 2':
+                    if column[1].getPackageNote() == 'Can only be on truck 2' and column[1].getDeliveryStatus() == 'at the hub':
                         self.truck2Packages.append(column[1])
+                        column[1].setDeliveryStatus('en route')
                         start = column[1].getPackageAddress()
-            for p in self.truck2Packages:
-                #hashMap.remove(p.getPackageID())
-                p.setDeliveryStatus('en route')
             while len(self.truck2Packages) < 4 and hashMap.isEmpty() is not True:
                 package = self.getMinDistance(start, hashMap.getTable())
+                exclude = []
+                while package.getDeliveryStatus() != 'at the hub':
+                    exclude.append(package)
+                    package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck2Packages.append(package)
                 #hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
@@ -183,6 +150,9 @@ class Truck:
 
             while len(self.truck1Packages) < 4 and hashMap.isEmpty() is not True:
                 package = self.getMinDistance(start, hashMap.getTable())
+                while package.getDeliveryStatus() != 'at the hub':
+                    exclude.append(package)
+                    package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck1Packages.append(package)
                 #hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
@@ -200,7 +170,7 @@ class Truck:
             self.traveledT1 += distance
             self.currentTime += self.timeToDeliver(distance)
             self.truck1Packages.remove(package)
-            deliveryTime = 'Delivered at' + str(self.currentTime)
+            deliveryTime = 'Delivered at ' + str(self.currentTime)
             package.setDeliveryStatus(deliveryTime)
             start = package.getPackageAddress()
 
@@ -214,7 +184,7 @@ class Truck:
             self.traveledT2 += distance
             self.currentTime += self.timeToDeliver(distance)
             self.truck2Packages.remove(package)
-            deliveryTime = 'Delivered at' + str(self.currentTime)
+            deliveryTime = 'Delivered at ' + str(self.currentTime)
             package.setDeliveryStatus(deliveryTime)
             start = package.getPackageAddress()
 
@@ -279,4 +249,3 @@ class Truck:
 
     def getCurrentTime(self):
         return self.currentTime
-

@@ -56,28 +56,15 @@ print('1st load:')
 truck.loadTruck(startingPoint, myHash)
 
 truck.checkDuplicates()
-packs = truck.getT1Packages()
-for p in packs:
-    print('p ID:', p.getPackageID())
-print('truck 2:')
-packs = truck.getT2Packages()
-for p in packs:
-    print('p ID:', p.getPackageID())
-truck.deliverPackages(startingPoint, myHash)
 
-print('Truck 1 distances:', truck.getT1Distance())
-print('Truck 2 distance:', truck.getT2Distance())
+truck.deliverPackages(startingPoint, myHash)
+#print('Truck 1 distances:', truck.getT1Distance())
+#print('Truck 2 distance:', truck.getT2Distance())
 
 print('second load:')
 truck.loadTruck(startingPoint, myHash)
 truck.checkDuplicates()
-packs = truck.getT1Packages()
-for p in packs:
-    print('p ID:', p.getPackageID())
 
-packs = truck.getT2Packages()
-for p in packs:
-    print('p ID:', p.getPackageID())
 truck.deliverPackages(startingPoint, myHash)
 print('T1 Distance:', truck.getT1Distance())
 print('T2 Distance:', truck.getT2Distance())
@@ -87,7 +74,6 @@ print('T2 Distance:', truck.getT2Distance())
 print('Total Distance:', truck.getTotalDistance())
 
 packages = myHash.getTable()
-i = 0
 for pack in packages:
     for p in pack:
         print('pID:', p[1].getPackageID(), p[1].getDeliveryStatus())
