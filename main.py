@@ -77,5 +77,5 @@ packages = myHash.getTable()
 for pack in packages:
     for p in pack:
         print('pID:', p[1].getPackageID(), p[1].getDeliveryStatus())
-# Finished: got total combined miles under 140.
-# ToDo: check if packages with special note: "can only be loaded on truck 2" are only on truck 2. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html
+# Finished: got total combined miles under 140. created time delta object to keep track of current time and set the package delivery times. Made sure packages met special note restraints on delivery. made sure each package got delivered
+# ToDo: Make sure packages are delivered by deadline. Create UI. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html
