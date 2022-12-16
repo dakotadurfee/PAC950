@@ -1,4 +1,5 @@
 import csv
+import datetime
 from package import Package
 from hashTable import chainingHash
 from truck import Truck
@@ -54,7 +55,6 @@ truck = Truck(distanceData, addressData)
 startingPoint = addressData[0]
 print('1st load:')
 truck.loadTruck(startingPoint, myHash)
-
 truck.checkDuplicates()
 
 truck.deliverPackages(startingPoint, myHash)
@@ -73,9 +73,33 @@ print('T2 Distance:', truck.getT2Distance())
 #
 print('Total Distance:', truck.getTotalDistance())
 
-packages = myHash.getTable()
-for pack in packages:
-    for p in pack:
-        print('pID:', p[1].getPackageID(), p[1].getDeliveryStatus())
-# Finished: got total combined miles under 140. created time delta object to keep track of current time and set the package delivery times. Made sure packages met special note restraints on delivery. made sure each package got delivered
-# ToDo: Make sure packages are delivered by deadline. Create UI. Create timedelta object to keep track of trucks and packages at specific times. ex: https://docs.python.org/3/library/datetime.html
+print('WGUPS Routing Program')
+print('Route was completed in', truck.getTotalDistance(), 'miles')
+userInput = input("""
+Please select an option below to being or type 'quit' to quit:
+    Type '1' to get info for all packages at a particular time
+    Type '2' to get info for a single package at a particular time
+""")
+
+while userInput != 'quit':
+    if userInput == '1':
+        userTime = input('Enter a time in (HH:MM:SS): ')
+        (hours, minutes, seconds) = userTime.split(':')
+        userTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+        if userTime < truck.getFirstDeliveryTime():
+            for i in range(1,41):
+                print('Package ID:', i, ', At the hub')
+        elif userTime > truck.getSecondDeliveryTime():
+            for i in range(1,41):
+                if myHash.search(i) in truck.getFirstTripPackages():
+                    print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
+
+    userInput = input("""
+    Please select an option below to being or type 'quit' to quit:
+        Type '1' to get info for all packages at a particular time
+        Type '2' to get info for a single package at a particular time
+    """)
+
+
+# Finished: created menu for user.
+# ToDo: Make sure packages are delivered by deadline. Create UI. Finish UI ex: https://docs.python.org/3/library/datetime.html

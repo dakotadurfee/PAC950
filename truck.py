@@ -15,6 +15,12 @@ class Truck:
         self.currentTime = timedelta(hours = 8)
         self.wrongAddress = timedelta(hours = 10, minutes = 20)
         self.addressChanged = False
+        self.firstDeliveryTime = timedelta(hours = 8)
+        self.secondDeliveryTime = None
+        self.firstTripPackages = []
+        self.secondTripPackages = []
+        self.T1SecondTrip = []
+        self.T2SecondTrip = []
 
     def getDistanceBetween(self, address1, address2):
 
@@ -97,18 +103,21 @@ class Truck:
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 if package in buddyPackages:
                     self.truck1Packages.append(package)
+                    self.firstTripPackages.append(package)
                     buddyPackages.remove(package)
                     #hashMap.remove(package.getPackageID())
                     package.setDeliveryStatus('en route')
                     while len(buddyPackages) > 0:
                         package = self.getMinDistance(start, buddyPackages, None, 'yes')
                         self.truck1Packages.append(package)
+                        self.firstTripPackages.append(package)
                         buddyPackages.remove(package)
                         #hashMap.remove(package.getPackageID())
                         package.setDeliveryStatus('en route')
                         start = self.truck1Packages[-1].getPackageAddress()
                 elif package.getPackageNote() == '':
                     self.truck1Packages.append(package)
+                    self.firstTripPackages.append(package)
                     start = package.getPackageAddress()
                     #hashMap.remove(package.getPackageID())
                     package.setDeliveryStatus('en route')
@@ -126,15 +135,18 @@ class Truck:
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck2Packages.append(package)
+                self.firstTripPackages.append(package)
                 start = package.getPackageAddress()
                 #hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
 
         else:
+            self.secondDeliveryTime = self.currentTime
             for row in hashMap.getTable():
                 for column in row:
                     if column[1].getPackageNote() == 'Can only be on truck 2' and column[1].getDeliveryStatus() == 'at the hub':
                         self.truck2Packages.append(column[1])
+                        self.secondTripPackages.append(column[1])
                         column[1].setDeliveryStatus('en route')
                         start = column[1].getPackageAddress()
             while len(self.truck2Packages) < 4 and hashMap.isEmpty() is not True:
@@ -144,6 +156,7 @@ class Truck:
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck2Packages.append(package)
+                self.secondTripPackages.append(column[1])
                 #hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
@@ -154,6 +167,7 @@ class Truck:
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck1Packages.append(package)
+                self.secondTripPackages.append(package)
                 #hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
@@ -249,3 +263,16 @@ class Truck:
 
     def getCurrentTime(self):
         return self.currentTime
+
+    def getFirstDeliveryTime(self):
+        return self.firstDeliveryTime
+
+    def getSecondDeliveryTime(self):
+        return self.secondDeliveryTime
+
+    def getFirstTripPackages(self):
+        return self.firstTripPackages
+
+    def getSecondTripPackages(self):
+        return self.secondTripPackages
+
