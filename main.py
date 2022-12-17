@@ -61,9 +61,15 @@ truck.loadTruck(startingPoint, myHash)
 
 truck.deliverPackages(startingPoint, myHash)
 packages = myHash.getTable()
-for row in packages:
+for row in myHash.getTable():
     for column in row:
-        print(column[1].getDeliveryStatus(), column[1].getDeliveryDeadline())
+        deliveredTime = column[1].getDeliveryStatus()[13:]
+        (hours, minutes, seconds) = deliveredTime.split(':')
+        deliveredTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+        if column[1].getDeliveryDeadline() != 'EOD':
+            deadlineTime = column[1].getDeliveryDeadline()
+            (hours, minutes, seconds) = deadlineTime.split(':')
+            deadlineTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
 print('First DeliveryTime:', truck.getFirstDeliveryTime())
