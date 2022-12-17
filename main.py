@@ -153,5 +153,5 @@ while userInput != 'quit':
     """)
 
 
-# Finished: created menu for user.
-# ToDo: Make sure packages are delivered by deadline. Create UI. Finish UI ex: https://docs.python.org/3/library/datetime.html
+# Finished: finished menu for user. Created loop to show packages delivery times and packages deadlines
+# ToDo: make packages be delivered before deadlines. Clean up code. Add comments ex: https://docs.python.org/3/library/datetime.html
