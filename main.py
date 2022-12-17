@@ -51,27 +51,19 @@ loadAddressData('C:/Users/peral/PycharmProjects/PAC950/CSVs/address.csv')
 
 truck = Truck(distanceData, addressData)
 
-
 startingPoint = addressData[0]
 
 truck.loadTruck(startingPoint, myHash)
-truck.checkDuplicates()
 
 truck.deliverPackages(startingPoint, myHash)
-#print('Truck 1 distances:', truck.getT1Distance())
-#print('Truck 2 distance:', truck.getT2Distance())
-
 
 truck.loadTruck(startingPoint, myHash)
-truck.checkDuplicates()
 
 truck.deliverPackages(startingPoint, myHash)
-
-
-# print('Hash table:', myHash.getTable())
-#
-
-
+packages = myHash.getTable()
+for row in packages:
+    for column in row:
+        print(column[1].getDeliveryStatus(), column[1].getDeliveryDeadline())
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
 print('First DeliveryTime:', truck.getFirstDeliveryTime())

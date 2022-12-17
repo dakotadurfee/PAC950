@@ -32,3 +32,6 @@ class Package:
 
     def getDeliveryStatus(self):
         return self.deliveryStatus
+
+    def getDeliveryDeadline(self):
+        return self.deliveryDeadline
