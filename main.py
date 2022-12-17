@@ -43,9 +43,9 @@ def loadAddressData(fileName):
             i += 1
 
 
-loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
-loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
-loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
+loadPackageData('C:/Users/peral/PycharmProjects/PAC950/CSVs/package.csv')
+loadDistanceData('C:/Users/peral/PycharmProjects/PAC950/CSVs/distance.csv')
+loadAddressData('C:/Users/peral/PycharmProjects/PAC950/CSVs/address.csv')
 
 # print('Address:', addressData)
 
@@ -53,7 +53,7 @@ truck = Truck(distanceData, addressData)
 
 
 startingPoint = addressData[0]
-print('1st load:')
+
 truck.loadTruck(startingPoint, myHash)
 truck.checkDuplicates()
 
@@ -61,20 +61,22 @@ truck.deliverPackages(startingPoint, myHash)
 #print('Truck 1 distances:', truck.getT1Distance())
 #print('Truck 2 distance:', truck.getT2Distance())
 
-print('second load:')
+
 truck.loadTruck(startingPoint, myHash)
 truck.checkDuplicates()
 
 truck.deliverPackages(startingPoint, myHash)
-print('T1 Distance:', truck.getT1Distance())
-print('T2 Distance:', truck.getT2Distance())
+
 
 # print('Hash table:', myHash.getTable())
 #
-print('Total Distance:', truck.getTotalDistance())
+
 
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
+print('First DeliveryTime:', truck.getFirstDeliveryTime())
+print('Second DeliveryTime:', truck.getSecondDeliveryTime())
+print('Current Time:', truck.getCurrentTime())
 userInput = input("""
 Please select an option below to being or type 'quit' to quit:
     Type '1' to get info for all packages at a particular time
@@ -89,10 +91,68 @@ while userInput != 'quit':
         if userTime < truck.getFirstDeliveryTime():
             for i in range(1,41):
                 print('Package ID:', i, ', At the hub')
-        elif userTime > truck.getSecondDeliveryTime():
+        elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime():
+            for i in range(1,41):
+                if myHash.search(i) in truck.getSecondTripPackages():
+                    print('Package ID:', i, ', At the hub')
+                else:
+                    deliveryTime = myHash.search(i).getDeliveryStatus()[13:]
+                    (hours, minutes, seconds) = deliveryTime.split(':')
+                    deliveryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+                    if userTime >= deliveryTime:
+                        print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
+                    else:
+                        print('Package ID:', i, ', en route')
+        elif truck.getSecondDeliveryTime() <= userTime < truck.getCurrentTime():
             for i in range(1,41):
                 if myHash.search(i) in truck.getFirstTripPackages():
                     print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
+                else:
+                    deliveryTime = myHash.search(i).getDeliveryStatus()[13:]
+                    (hours, minutes, seconds) = deliveryTime.split(':')
+                    deliveryTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+                    if userTime >= deliveryTime:
+                        print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
+                    else:
+                        print('Package ID:', i, ', en route')
+        elif userTime >= truck.getCurrentTime():
+            for i in range(1,41):
+                print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
+    elif userInput == '2':
+        userPackage = input('Enter package ID number:')
+        package = myHash.search(userPackage)
+        userTime = input('Enter a time in (HH:MM:SS):')
+        (hours, minutes, seconds) = userTime.split(':')
+        userTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+        if userTime < truck.getFirstDeliveryTime():
+            print('Package ID:', userPackage, ', At the hub')
+        elif userTime >= truck.getCurrentTime():
+            print('Package ID:', userPackage, ',', package.getDeliveryStatus())
+        elif package in truck.getFirstTripPackages():
+            deliveryTime = package.getDeliveryStatus()[13:]
+            (hours, minutes, seconds) = deliveryTime.split(':')
+            deliveryTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+            if truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime() and userTime >= deliveryTime:
+                print('Package ID:', userPackage, ',', package.getDeliveryStatus())
+            elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime() and userTime < deliveryTime:
+                print('Package ID:', userPackage, ', en route')
+            else:
+                print('Package ID:', userPackage, ',', package.getDeliveryStatus())
+        elif package in truck.getSecondTripPackages():
+            deliveryTime = package.getDeliveryStatus()[13:]
+            (hours, minutes, seconds) = deliveryTime.split(':')
+            deliveryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+            if userTime < truck.getSecondDeliveryTime():
+                print('Package ID:', userPackage, ', At the hub')
+            else:
+                if userTime < deliveryTime:
+                    print('Package ID:', userPackage, ', en route')
+                else:
+                    print('Package ID:', userPackage, ',', package.getDeliveryStatus())
+
+
+
+
 
     userInput = input("""
     Please select an option below to being or type 'quit' to quit:
