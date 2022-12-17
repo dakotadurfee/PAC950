@@ -70,6 +70,8 @@ for row in myHash.getTable():
             deadlineTime = column[1].getDeliveryDeadline()
             (hours, minutes, seconds) = deadlineTime.split(':')
             deadlineTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+            if deliveredTime > deadlineTime:
+                print('Package ID:', column[1].getPackageID(), 'DeadlineTime:', column[1].getDeliveryDeadline(), 'Delivered Time:', column[1].getDeliveryStatus()[13:])
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
 print('First DeliveryTime:', truck.getFirstDeliveryTime())
@@ -160,4 +162,4 @@ while userInput != 'quit':
 
 
 # Finished: finished menu for user. Created loop to show packages delivery times and packages deadlines
-# ToDo: make packages be delivered before deadlines. Clean up code. Add comments ex: https://docs.python.org/3/library/datetime.html
+# ToDo: Clean up code. Add comments

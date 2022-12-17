@@ -89,6 +89,8 @@ class Truck:
                         buddyPackages.append(hashMap.search(note[26:]))
 
         if self.numLoads <= 1:
+            self.truck1Packages.append(hashMap.search('34'))
+
             while len(self.truck1Packages) < 16:
                 package = self.getMinDistance(start, hashMap.getTable())
                 exclude = []
@@ -125,6 +127,7 @@ class Truck:
 
             start = startingPoint
             while len(self.truck2Packages) < 16:
+
                 package = self.getMinDistance(start, hashMap.getTable())
                 while package.getDeliveryStatus() != 'at the hub':
                     exclude.append(package)
@@ -174,6 +177,8 @@ class Truck:
 
     def deliverPackages(self, startingPoint, hashMap):
         start = startingPoint
+        T1TravelTime = timedelta(hours = 0)
+        T2TravelTime = timedelta(hours = 0)
         while len(self.truck1Packages) > 0:
             if self.currentTime > self.wrongAddress and self.addressChanged == False:
                 pack = hashMap.search(9)
@@ -182,28 +187,36 @@ class Truck:
             package = self.getMinDistance(start, self.truck1Packages, None, 'delivery')
             distance = self.getDistanceBetween(start, package.getPackageAddress())
             self.traveledT1 += distance
-            self.currentTime += self.timeToDeliver(distance)
+            T1TravelTime += self.timeToDeliver(distance)
+            #self.currentTime += self.timeToDeliver(distance)
             self.truck1Packages.remove(package)
-            deliveryTime = 'Delivered at ' + str(self.currentTime)
+            deliveryTime = 'Delivered at ' + str(self.currentTime + T1TravelTime)
             package.setDeliveryStatus(deliveryTime)
             start = package.getPackageAddress()
 
         self.traveledT1 += self.getDistanceBetween(start, startingPoint)
-        self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
+        T1TravelTime += self.timeToDeliver(distance)
+        #self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
         start = startingPoint
 
         while len(self.truck2Packages) > 0:
             package = self.getMinDistance(start, self.truck2Packages, None, 'delivery')
             distance = self.getDistanceBetween(start, package.getPackageAddress())
             self.traveledT2 += distance
-            self.currentTime += self.timeToDeliver(distance)
+            T2TravelTime += self.timeToDeliver(distance)
+            #self.currentTime += self.timeToDeliver(distance)
             self.truck2Packages.remove(package)
-            deliveryTime = 'Delivered at ' + str(self.currentTime)
+            deliveryTime = 'Delivered at ' + str(self.currentTime + T2TravelTime)
             package.setDeliveryStatus(deliveryTime)
             start = package.getPackageAddress()
 
         self.traveledT2 += self.getDistanceBetween(start, startingPoint)
-        self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
+        T2TravelTime += self.timeToDeliver(distance)
+        #self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
+        if T1TravelTime > T2TravelTime:
+            self.currentTime += T1TravelTime
+        else:
+            self.currentTime += T2TravelTime
 
     def getTruck1(self, startingPoint):
         start = startingPoint
