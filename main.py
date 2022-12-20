@@ -5,11 +5,13 @@ from hashTable import chainingHash
 from package import Package
 from truck import Truck
 
+# Initializes a 2D array to store the distances between addresses
 distanceData = [[0 for i in range(27)] for j in range(27)]
+# Initializes an array to store the delivery addresses
 addressData = [None for i in range(27)]
 myHash = chainingHash()
 
-
+# This method reads in data from a csv file and creates package objects to hold that data.
 def loadPackageData(fileName):
     with open(fileName) as packageCSV:
         packageData = csv.reader(packageCSV, delimiter=',')
@@ -24,7 +26,7 @@ def loadPackageData(fileName):
             P = Package(packageID, address, deadline, city, zipCode, weight, note)
             myHash.insert(packageID, P)
 
-
+# This method fills the distanceData array with distances read in from a csv file.
 def loadDistanceData(fileName):
     with open(fileName) as distanceCSV:
         distanceDataCSV = csv.reader(distanceCSV, delimiter=',')
@@ -34,7 +36,7 @@ def loadDistanceData(fileName):
             for column in range(27):
                 distanceData[row][column] = distance[column]
 
-
+# This method fills the addressData array with addresses read in from a csv file.
 def loadAddressData(fileName):
     with open(fileName) as addressCSV:
         addressDataCSV = csv.reader(addressCSV, delimiter=',')
@@ -43,7 +45,7 @@ def loadAddressData(fileName):
             addressData[i] = address[1][1:]
             i += 1
 
-
+# These call the methods to read in data from csv files.
 loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
 loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
 loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
@@ -85,7 +87,9 @@ while userInput != 'quit':
         if userTime < truck.getFirstDeliveryTime():
             for i in range(1, 41):
                 print('Package ID:', i, ', At the hub')
-        # If user
+        # If user entered time is after first delivery trip time and before second delivery trip time then all packages that were
+        # on the second delivery run will be marked as 'At the hub'. Packages on the first delivery run are checked
+        # if they were delivered or en route at the user entered time.
         elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime():
             for i in range(1, 41):
                 if myHash.search(i) in truck.getSecondTripPackages():
@@ -98,6 +102,9 @@ while userInput != 'quit':
                         print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
                     else:
                         print('Package ID:', i, ', en route')
+        # If user entered time is after second delivery trip time and before the time the trucks completed their routes then
+        # all packages that were on the first delivery run will be displayed with what time they were delivered. Packages on
+        # the second delivery run are checked if they were delivered or en route at the user entered time.
         elif truck.getSecondDeliveryTime() <= userTime < truck.getCurrentTime():
             for i in range(1, 41):
                 if myHash.search(i) in truck.getFirstTripPackages():
@@ -110,25 +117,34 @@ while userInput != 'quit':
                         print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
                     else:
                         print('Package ID:', i, ', en route')
-        elif userTime >= truck.getCurrentTime():
+        # This case is if the user entered a time after the trucks completed their routes and displays all packages and
+        # what time they were delivered.
+        else:
             for i in range(1, 41):
                 print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
+    # If the user types '2' then they are promted to enter a package ID and a time.
     elif userInput == '2':
         userPackage = input('Enter package ID number:')
         package = myHash.search(userPackage)
         userTime = input('Enter a time in (HH:MM:SS):')
         (hours, minutes, seconds) = userTime.split(':')
         userTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+        # If user entered time is before first trip delivery time then package is marked as 'At the hub'.
         if userTime < truck.getFirstDeliveryTime():
             print('Package ID:', userPackage, ', At the hub')
+        # If user entered time is after the time the trucks completed their routes then the time the package was delivered is displayed.
         elif userTime >= truck.getCurrentTime():
             print('Package ID:', userPackage, ',', package.getDeliveryStatus())
         elif package in truck.getFirstTripPackages():
             deliveryTime = package.getDeliveryStatus()[13:]
             (hours, minutes, seconds) = deliveryTime.split(':')
             deliveryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+            # If user entered time is after first trip delivery time, before second trip delivery time, and after the time
+            # the package was delivered then the package's delivered time is displayed.
             if truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime() and userTime >= deliveryTime:
                 print('Package ID:', userPackage, ',', package.getDeliveryStatus())
+            # If user entered time is after first trip delivery time, before second trip delivery time, and before the time
+            # the package was delivered then the package is displayed as 'en route'.
             elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime() and userTime < deliveryTime:
                 print('Package ID:', userPackage, ', en route')
             else:
@@ -137,6 +153,7 @@ while userInput != 'quit':
             deliveryTime = package.getDeliveryStatus()[13:]
             (hours, minutes, seconds) = deliveryTime.split(':')
             deliveryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+            # If user entered time is before second trip delivery time then the package is displayed as 'At the hub'.
             if userTime < truck.getSecondDeliveryTime():
                 print('Package ID:', userPackage, ', At the hub')
             else:

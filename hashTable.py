@@ -51,5 +51,6 @@ class chainingHash:
                 self.table[bucket].remove([kv[0], kv[1]])
                 return True
 
+    # Returns the chaining hash table.
     def getTable(self):
         return self.table
