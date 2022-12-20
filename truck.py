@@ -12,10 +12,10 @@ class Truck:
         self.traveledT1 = 0
         self.traveledT2 = 0
         self.numLoads = 0
-        self.currentTime = timedelta(hours = 8)
-        self.wrongAddress = timedelta(hours = 10, minutes = 20)
+        self.currentTime = timedelta(hours=8)
+        self.wrongAddress = timedelta(hours=10, minutes=20)
         self.addressChanged = False
-        self.firstDeliveryTime = timedelta(hours = 8)
+        self.firstDeliveryTime = timedelta(hours=8)
         self.secondDeliveryTime = None
         self.firstTripPackages = []
         self.secondTripPackages = []
@@ -42,12 +42,14 @@ class Truck:
                         if p[1].getPackageAddress() != start and exclude is None:
                             # print('package:', p[1].getPackageAddress())
 
-                            if float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(distance):
+                            if float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(
+                                    distance):
                                 pack = p[1]
                                 distance = self.getDistanceBetween(startingPoint, p[1].getPackageAddress())
                                 # start = p[1].getPackageAddress()
                         elif exclude is not None and p[1] not in exclude and p[1].getPackageAddress() != start:
-                            if float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(distance):
+                            if float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(
+                                    distance):
                                 pack = p[1]
                                 distance = self.getDistanceBetween(start, p[1].getPackageAddress())
                                 # start = p[1].getPackageAddress()
@@ -100,30 +102,31 @@ class Truck:
                     start = package.getPackageAddress()
                 exclude = []
 
-                while package.getPackageNote() == 'Can only be on truck 2' or package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[:5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
+                while package.getPackageNote() == 'Can only be on truck 2' or package.getPackageNote()[
+                                                                              :7] == 'Delayed' or package.getPackageNote()[
+                                                                                                  :5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 if package in buddyPackages:
                     self.truck1Packages.append(package)
                     self.firstTripPackages.append(package)
                     buddyPackages.remove(package)
-                    #hashMap.remove(package.getPackageID())
+                    # hashMap.remove(package.getPackageID())
                     package.setDeliveryStatus('en route')
                     while len(buddyPackages) > 0:
                         package = self.getMinDistance(start, buddyPackages, None, 'yes')
                         self.truck1Packages.append(package)
                         self.firstTripPackages.append(package)
                         buddyPackages.remove(package)
-                        #hashMap.remove(package.getPackageID())
+                        # hashMap.remove(package.getPackageID())
                         package.setDeliveryStatus('en route')
                         start = self.truck1Packages[-1].getPackageAddress()
                 elif package.getPackageNote() == '':
                     self.truck1Packages.append(package)
                     self.firstTripPackages.append(package)
                     start = package.getPackageAddress()
-                    #hashMap.remove(package.getPackageID())
+                    # hashMap.remove(package.getPackageID())
                     package.setDeliveryStatus('en route')
-
 
             start = startingPoint
             while len(self.truck2Packages) < 16:
@@ -134,20 +137,22 @@ class Truck:
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 exclude = []
 
-                while package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[:5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
+                while package.getPackageNote()[:7] == 'Delayed' or package.getPackageNote()[
+                                                                   :5] == 'Wrong' or package.getDeliveryStatus() != 'at the hub':
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck2Packages.append(package)
                 self.firstTripPackages.append(package)
                 start = package.getPackageAddress()
-                #hashMap.remove(package.getPackageID())
+                # hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
 
         else:
             self.secondDeliveryTime = self.currentTime
             for row in hashMap.getTable():
                 for column in row:
-                    if column[1].getPackageNote() == 'Can only be on truck 2' and column[1].getDeliveryStatus() == 'at the hub':
+                    if column[1].getPackageNote() == 'Can only be on truck 2' and column[
+                        1].getDeliveryStatus() == 'at the hub':
                         self.truck2Packages.append(column[1])
                         self.secondTripPackages.append(column[1])
                         column[1].setDeliveryStatus('en route')
@@ -160,7 +165,7 @@ class Truck:
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck2Packages.append(package)
                 self.secondTripPackages.append(column[1])
-                #hashMap.remove(package.getPackageID())
+                # hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
 
@@ -171,14 +176,14 @@ class Truck:
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck1Packages.append(package)
                 self.secondTripPackages.append(package)
-                #hashMap.remove(package.getPackageID())
+                # hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
 
     def deliverPackages(self, startingPoint, hashMap):
         start = startingPoint
-        T1TravelTime = timedelta(hours = 0)
-        T2TravelTime = timedelta(hours = 0)
+        T1TravelTime = timedelta(hours=0)
+        T2TravelTime = timedelta(hours=0)
         while len(self.truck1Packages) > 0:
             if self.currentTime > self.wrongAddress and self.addressChanged == False:
                 pack = hashMap.search(9)
@@ -188,7 +193,7 @@ class Truck:
             distance = self.getDistanceBetween(start, package.getPackageAddress())
             self.traveledT1 += distance
             T1TravelTime += self.timeToDeliver(distance)
-            #self.currentTime += self.timeToDeliver(distance)
+            # self.currentTime += self.timeToDeliver(distance)
             self.truck1Packages.remove(package)
             deliveryTime = 'Delivered at ' + str(self.currentTime + T1TravelTime)
             package.setDeliveryStatus(deliveryTime)
@@ -196,7 +201,7 @@ class Truck:
 
         self.traveledT1 += self.getDistanceBetween(start, startingPoint)
         T1TravelTime += self.timeToDeliver(distance)
-        #self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
+        # self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
         start = startingPoint
 
         while len(self.truck2Packages) > 0:
@@ -204,7 +209,7 @@ class Truck:
             distance = self.getDistanceBetween(start, package.getPackageAddress())
             self.traveledT2 += distance
             T2TravelTime += self.timeToDeliver(distance)
-            #self.currentTime += self.timeToDeliver(distance)
+            # self.currentTime += self.timeToDeliver(distance)
             self.truck2Packages.remove(package)
             deliveryTime = 'Delivered at ' + str(self.currentTime + T2TravelTime)
             package.setDeliveryStatus(deliveryTime)
@@ -212,7 +217,7 @@ class Truck:
 
         self.traveledT2 += self.getDistanceBetween(start, startingPoint)
         T2TravelTime += self.timeToDeliver(distance)
-        #self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
+        # self.currentTime += self.timeToDeliver(self.getDistanceBetween(start, startingPoint))
         if T1TravelTime > T2TravelTime:
             self.currentTime += T1TravelTime
         else:
@@ -271,7 +276,7 @@ class Truck:
         print('no duplicates')
 
     def timeToDeliver(self, distance):
-        time = timedelta(hours = distance / 18)
+        time = timedelta(hours=distance / 18)
         return time
 
     def getCurrentTime(self):
@@ -288,4 +293,3 @@ class Truck:
 
     def getSecondTripPackages(self):
         return self.secondTripPackages
-

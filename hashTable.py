@@ -1,4 +1,4 @@
-#This class creates a chaining hash table to store all of the packages based off package ID.
+# This class creates a chaining hash table to store all of the packages based off package ID.
 class chainingHash:
     def __init__(self, initial_capacity=10):
         # initialize the hash table with empty bucket list entries.

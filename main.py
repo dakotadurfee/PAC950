@@ -79,14 +79,14 @@ while userInput != 'quit':
     if userInput == '1':
         userTime = input('Enter a time in (HH:MM:SS): ')
         (hours, minutes, seconds) = userTime.split(':')
-        userTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
-        #If the user entered time is before the first delivery time then the program displays all packages as 'At the hub'
+        userTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
+        # If the user entered time is before the first delivery time then the program displays all packages as 'At the hub'
         if userTime < truck.getFirstDeliveryTime():
-            for i in range(1,41):
+            for i in range(1, 41):
                 print('Package ID:', i, ', At the hub')
         # If user
         elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime():
-            for i in range(1,41):
+            for i in range(1, 41):
                 if myHash.search(i) in truck.getSecondTripPackages():
                     print('Package ID:', i, ', At the hub')
                 else:
@@ -98,26 +98,26 @@ while userInput != 'quit':
                     else:
                         print('Package ID:', i, ', en route')
         elif truck.getSecondDeliveryTime() <= userTime < truck.getCurrentTime():
-            for i in range(1,41):
+            for i in range(1, 41):
                 if myHash.search(i) in truck.getFirstTripPackages():
                     print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
                 else:
                     deliveryTime = myHash.search(i).getDeliveryStatus()[13:]
                     (hours, minutes, seconds) = deliveryTime.split(':')
-                    deliveryTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+                    deliveryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
                     if userTime >= deliveryTime:
                         print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
                     else:
                         print('Package ID:', i, ', en route')
         elif userTime >= truck.getCurrentTime():
-            for i in range(1,41):
+            for i in range(1, 41):
                 print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
     elif userInput == '2':
         userPackage = input('Enter package ID number:')
         package = myHash.search(userPackage)
         userTime = input('Enter a time in (HH:MM:SS):')
         (hours, minutes, seconds) = userTime.split(':')
-        userTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+        userTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
         if userTime < truck.getFirstDeliveryTime():
             print('Package ID:', userPackage, ', At the hub')
         elif userTime >= truck.getCurrentTime():
@@ -125,7 +125,7 @@ while userInput != 'quit':
         elif package in truck.getFirstTripPackages():
             deliveryTime = package.getDeliveryStatus()[13:]
             (hours, minutes, seconds) = deliveryTime.split(':')
-            deliveryTime = datetime.timedelta(hours = int(hours), minutes = int(minutes), seconds = int(seconds))
+            deliveryTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
             if truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime() and userTime >= deliveryTime:
                 print('Package ID:', userPackage, ',', package.getDeliveryStatus())
             elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime() and userTime < deliveryTime:
@@ -144,16 +144,11 @@ while userInput != 'quit':
                 else:
                     print('Package ID:', userPackage, ',', package.getDeliveryStatus())
 
-
-
-
-
     userInput = input("""
     Please select an option below to being or type 'quit' to quit:
         Type '1' to get info for all packages at a particular time
         Type '2' to get info for a single package at a particular time
     """)
-
 
 # Finished: finished menu for user. Created loop to show packages delivery times and packages deadlines
 # ToDo: Clean up code. Add comments
