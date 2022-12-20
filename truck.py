@@ -152,7 +152,7 @@ class Truck:
                         self.secondTripPackages.append(column[1])
                         column[1].setDeliveryStatus('en route')
                         start = column[1].getPackageAddress()
-            while len(self.truck2Packages) < 4 and hashMap.isEmpty() is not True:
+            while len(self.truck2Packages) < 4:
                 package = self.getMinDistance(start, hashMap.getTable())
                 exclude = []
                 while package.getDeliveryStatus() != 'at the hub':
@@ -164,7 +164,7 @@ class Truck:
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
 
-            while len(self.truck1Packages) < 4 and hashMap.isEmpty() is not True:
+            while len(self.truck1Packages) < 4:
                 package = self.getMinDistance(start, hashMap.getTable())
                 while package.getDeliveryStatus() != 'at the hub':
                     exclude.append(package)
