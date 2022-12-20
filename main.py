@@ -1,7 +1,8 @@
 import csv
 import datetime
-from package import Package
+
 from hashTable import chainingHash
+from package import Package
 from truck import Truck
 
 distanceData = [[0 for i in range(27)] for j in range(27)]

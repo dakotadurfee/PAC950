@@ -1,6 +1,7 @@
+from datetime import timedelta
+
 from hashTable import chainingHash
 from package import Package
-from datetime import timedelta
 
 
 class Truck:
