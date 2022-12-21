@@ -179,5 +179,3 @@ while userInput != 'quit':
         Type '2' to get info for a single package at a particular time
     """)
 
-# Finished: finished menu for user. Created loop to show packages delivery times and packages deadlines
-# ToDo: Clean up code. Add comments
