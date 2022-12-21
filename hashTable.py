@@ -1,12 +1,13 @@
 # This class creates a chaining hash table to store all of the packages based off package ID.
 class chainingHash:
-    def __init__(self, initial_capacity=10):
+    def __init__(self):
         # initialize the hash table with empty bucket list entries.
         self.table = []
-        for i in range(initial_capacity):
+        for i in range(10):
             self.table.append([])
 
     # Inserts a new item into the hash table.
+    # space-time complexity O(n)
     def insert(self, key, item):  # does both insert and update
         # get the bucket list where this item will go.
         bucket = int(key) % len(self.table)
@@ -26,6 +27,7 @@ class chainingHash:
 
     # Searches for an item with matching key in the hash table.
     # Returns the item if found, or None if not found.
+    # space-time complexity O(n)
     def search(self, key):
         # get the bucket list where this key would be.
         bucket = int(key) % len(self.table)
@@ -40,6 +42,7 @@ class chainingHash:
         return None
 
     # Removes an item with matching key from the hash table.
+    # space-time complexity O(n)
     def remove(self, key):
         # get the bucket list where this item will be removed from.
         bucket = int(key) % len(self.table)

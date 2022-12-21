@@ -75,6 +75,7 @@ userInput = input("""
 Please select an option below to being or type 'quit' to quit:
     Type '1' to get info for all packages at a particular time
     Type '2' to get info for a single package at a particular time
+    Type '3' to get the info for a single package
 """)
 
 while userInput != 'quit':
@@ -161,6 +162,16 @@ while userInput != 'quit':
                     print('Package ID:', userPackage, ', en route')
                 else:
                     print('Package ID:', userPackage, ',', package.getDeliveryStatus())
+    elif userInput =='3':
+        userPackage = input('Enter package ID number:')
+        package = myHash.search(userPackage)
+        print('Package ID:', package.getPackageID())
+        print('Package delivery address:', package.getPackageAddress())
+        print('Package delivery deadline:', package.getDeliveryDeadline())
+        print('Package delivery city:', package.getPackageCity())
+        print('Package delivery zip code:', package.getZipCode())
+        print('Package weight:', package.getWeight())
+        print('Package delivery status:', package.getDeliveryStatus())
 
     userInput = input("""
     Please select an option below to being or type 'quit' to quit:

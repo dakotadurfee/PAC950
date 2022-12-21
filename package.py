@@ -35,3 +35,12 @@ class Package:
 
     def getDeliveryDeadline(self):
         return self.deliveryDeadline
+
+    def getPackageCity(self):
+        return self.deliveryCity
+
+    def getZipCode(self):
+        return self.deliveryZip
+
+    def getWeight(self):
+        return self.packageWeight

@@ -1,3 +1,5 @@
+# Dakota Durfee
+# Student ID: 005550217
 from datetime import timedelta
 
 from hashTable import chainingHash
@@ -34,12 +36,14 @@ class Truck:
 
     # This method takes a starting point and finds the package with the closest delivery address to that starting point.
     # The method loops through a list of packages and assigns a package object every time a shorter distance between
-    # delivery addresses is found.
+    # delivery addresses is found. The method uses different ways of finding and assignging new packages based on the
+    # received parameter 'altSearch'.
     def getMinDistance(self, startingPoint, packages, exclude=None, altSearch='no'):
         distance = 50
         pack = Package()
         start = startingPoint
 
+        # This case has a space-time complexity of O(n^2)
         if altSearch == 'no':
             for package in packages:
                 for p in package:
@@ -54,7 +58,7 @@ class Truck:
                                     distance):
                                 pack = p[1]
                                 distance = self.getDistanceBetween(start, p[1].getPackageAddress())
-
+        # This case has a space-time complexity of O(n)
         elif altSearch == 'yes':
             if exclude == None:
                 for package in packages:
@@ -70,7 +74,7 @@ class Truck:
                                 self.getDistanceBetween(start, package.getPackageAddress())) < float(distance):
                             pack = package
                             distance = self.getDistanceBetween(start, package.getPackageAddress())
-
+        # This case has a space-time complexity of O(n)
         else:
             for package in packages:
                 if float(self.getDistanceBetween(start, package.getPackageAddress())) < float(distance):
@@ -79,12 +83,14 @@ class Truck:
         return pack
 
     # This method tries to optimally load each truck. The only package that is manually loaded is package ID: 34.
+    # This package is manually loaded to ensure each package is delivered by their deadline.
     def loadTruck(self, startingPoint, hashMap):
         start = startingPoint
         buddyPackages = []
         self.numLoads += 1
         # This loop appends packages that must be delivered together to the buddyPackages list so that list can later
         # be loaded onto a truck.
+        # space-time complexity is O(n^2)
         for row in hashMap.getTable():
             for column in row:
                 note = column[1].getPackageNote()
@@ -160,6 +166,7 @@ class Truck:
 
         else:
             self.secondDeliveryTime = self.currentTime
+            # space-time complexity O(n^2)
             for row in hashMap.getTable():
                 for column in row:
                     # Assures all packages are loaded on the correct truck.
