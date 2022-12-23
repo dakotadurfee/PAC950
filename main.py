@@ -177,5 +177,6 @@ while userInput != 'quit':
     Please select an option below to being or type 'quit' to quit:
         Type '1' to get info for all packages at a particular time
         Type '2' to get info for a single package at a particular time
+        Type '3' to get the info for a single package
     """)
 
