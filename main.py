@@ -12,8 +12,8 @@ addressData = [None for i in range(27)]
 myHash = chainingHash()
 
 # This method reads in data from a csv file and creates package objects to hold that data.
-def loadPackageData(fileName):
-    with open(fileName) as packageCSV:
+def loadPackageData():
+    with open('CSVs/package.csv') as packageCSV:
         packageData = csv.reader(packageCSV, delimiter=',')
         for package in packageData:
             packageID = package[0]
@@ -27,8 +27,8 @@ def loadPackageData(fileName):
             myHash.insert(packageID, P)
 
 # This method fills the distanceData array with distances read in from a csv file.
-def loadDistanceData(fileName):
-    with open(fileName) as distanceCSV:
+def loadDistanceData():
+    with open('CSVs/distance.csv') as distanceCSV:
         distanceDataCSV = csv.reader(distanceCSV, delimiter=',')
         row = -1
         for distance in distanceDataCSV:
@@ -37,8 +37,8 @@ def loadDistanceData(fileName):
                 distanceData[row][column] = distance[column]
 
 # This method fills the addressData array with addresses read in from a csv file.
-def loadAddressData(fileName):
-    with open(fileName) as addressCSV:
+def loadAddressData():
+    with open('CSVs/address.csv') as addressCSV:
         addressDataCSV = csv.reader(addressCSV, delimiter=',')
         i = 0
         for address in addressDataCSV:
@@ -46,9 +46,9 @@ def loadAddressData(fileName):
             i += 1
 
 # These call the methods to read in data from csv files.
-loadPackageData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/package.csv')
-loadDistanceData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/distance.csv')
-loadAddressData('C:/Users/dakot/PycharmProjects/PAC950/CSVs/address.csv')
+loadPackageData()
+loadDistanceData()
+loadAddressData()
 
 truck = Truck(distanceData, addressData)
 
