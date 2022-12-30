@@ -12,6 +12,7 @@ addressData = [None for i in range(27)]
 myHash = chainingHash()
 
 # This method reads in data from a csv file and creates package objects to hold that data.
+# Space-time complexity is O(n)
 def loadPackageData():
     with open('CSVs/package.csv') as packageCSV:
         packageData = csv.reader(packageCSV, delimiter=',')
@@ -27,6 +28,7 @@ def loadPackageData():
             myHash.insert(packageID, P)
 
 # This method fills the distanceData array with distances read in from a csv file.
+# Space-time complexity is O(n)
 def loadDistanceData():
     with open('CSVs/distance.csv') as distanceCSV:
         distanceDataCSV = csv.reader(distanceCSV, delimiter=',')
@@ -37,6 +39,7 @@ def loadDistanceData():
                 distanceData[row][column] = distance[column]
 
 # This method fills the addressData array with addresses read in from a csv file.
+# Space time complexity is O(n)
 def loadAddressData():
     with open('CSVs/address.csv') as addressCSV:
         addressDataCSV = csv.reader(addressCSV, delimiter=',')
@@ -69,9 +72,6 @@ truck.deliverPackages(startingPoint, myHash)
 
 # This creates the UI for the WGUPS Routing Program. It shows how many miles the route took to complete and
 # gives the user directions for operating the UI.
-packages = truck.getSecondTripPackages()
-for p in packages:
-    print(p.getPackageID())
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
 userInput = input("""
@@ -88,6 +88,7 @@ while userInput != 'quit':
         (hours, minutes, seconds) = userTime.split(':')
         userTime = datetime.timedelta(hours=int(hours), minutes=int(minutes), seconds=int(seconds))
         # If the user entered time is before the first delivery time then the program displays all packages as 'At the hub'
+        # Space-time complexity is O(1)
         if userTime < truck.getFirstDeliveryTime():
             for i in range(1, 41):
                 print('Package ID:', i, ', At the hub')
@@ -99,6 +100,7 @@ while userInput != 'quit':
         # If user entered time is after first delivery trip time and before second delivery trip time then all packages that were
         # on the second delivery run will be marked as 'At the hub'. Packages on the first delivery run are checked
         # if they were delivered or en route at the user entered time.
+        # Space-time complexity is O(1)
         elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime():
             for i in range(1, 41):
                 if myHash.search(i) in truck.getSecondTripPackages():
@@ -129,6 +131,7 @@ while userInput != 'quit':
         # If user entered time is after second delivery trip time and before the time the trucks completed their routes then
         # all packages that were on the first delivery run will be displayed with what time they were delivered. Packages on
         # the second delivery run are checked if they were delivered or en route at the user entered time.
+        # Space-time complexity is O(1)
         elif truck.getSecondDeliveryTime() <= userTime < truck.getCurrentTime():
             for i in range(1, 41):
                 if myHash.search(i) in truck.getFirstTripPackages():
@@ -158,6 +161,7 @@ while userInput != 'quit':
                         print('Package weight:', myHash.search(i).getWeight())
         # This case is if the user entered a time after the trucks completed their routes and displays all packages and
         # what time they were delivered.
+        # Space-time complexity is O(1)
         else:
             for i in range(1, 41):
                 print('Package ID:', i, ',', myHash.search(i).getDeliveryStatus())
@@ -167,6 +171,7 @@ while userInput != 'quit':
                 print('Package delivery zip code:', myHash.search(i).getZipCode())
                 print('Package weight:', myHash.search(i).getWeight())
     # If the user types '2' then they are promted to enter a package ID and a time.
+    # Space-time complexity is O(1)
     elif userInput == '2':
         userPackage = input('Enter package ID number:')
         package = myHash.search(userPackage)
@@ -245,6 +250,7 @@ while userInput != 'quit':
                     print('Package delivery city:', myHash.search(userPackage).getPackageCity())
                     print('Package delivery zip code:', myHash.search(userPackage).getZipCode())
                     print('Package weight:', myHash.search(userPackage).getWeight())
+    # Space-time complexity is O(1)
     elif userInput =='3':
         userPackage = input('Enter package ID number:')
         package = myHash.search(userPackage)

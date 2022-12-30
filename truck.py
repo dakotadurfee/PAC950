@@ -85,6 +85,11 @@ class Truck:
 
     # This method tries to optimally load each truck. The only package that is manually loaded is package ID: 34.
     # This package is manually loaded to ensure each package is delivered by their deadline.
+    # The space-time complexities of this method depend on the getMinDistance method. The only time the space-time complexity
+    # is different than O(N^2) when getMinDistance is called is when the buddy packages are loaded. The space-time complexity
+    # for that segment is O(N). If the package with the next closest delivery address cannot be loaded/delivered based
+    # off deadlines/special notes then the program will call getMinDistance until an acceptable package is returned. This
+    # will slow down the runtime of the program.
     def loadTruck(self, startingPoint, hashMap):
         start = startingPoint
         buddyPackages = []
@@ -204,6 +209,10 @@ class Truck:
 
     # This method optimally delivers the packages loaded on trucks 1 and 2. It also keeps track of the time it takes for
     # each truck to complete its route and the distance each truck traveled.
+    # In each while loop the getMinDistance method is called to find the next closest package delivery on the truck. Since
+    # each truck can only have a maximum of 16 packages loaded onto them, the space-time complexity would be O(16) or O(1).
+    # The algorithm used in the getMinDistance method has a space-time complexity of O(n) which makes the actual space-time
+    # complexity of the while loops O(n).
     def deliverPackages(self, startingPoint, hashMap):
         start = startingPoint
         # Keeps track of how long it takes for both trucks to complete their routes.
