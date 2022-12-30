@@ -69,6 +69,9 @@ truck.deliverPackages(startingPoint, myHash)
 
 # This creates the UI for the WGUPS Routing Program. It shows how many miles the route took to complete and
 # gives the user directions for operating the UI.
+packages = truck.getSecondTripPackages()
+for p in packages:
+    print(p.getPackageID())
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
 userInput = input("""

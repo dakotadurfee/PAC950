@@ -34,10 +34,11 @@ class Truck:
 
         return float(d)
 
-    # This method takes a starting point and finds the package with the closest delivery address to that starting point.
-    # The method loops through a list of packages and assigns a package object every time a shorter distance between
-    # delivery addresses is found. The method uses different ways of finding and assignging new packages based on the
-    # received parameter 'altSearch'.
+    # This method uses the nearest neighbor approach to find the next package to be loaded or delivered. It starts with
+    # a package object, a distance and a starting point which would be the hub. It loops through every package and assigns
+    # the package object to the current package if the distance from the starting point to the delivery address is shorter
+    # than the already assigned distance. It will set the new starting point as the package's delivery address, and update
+    # the distance. The package with the closest delivery address from the starting point is returned.
     def getMinDistance(self, startingPoint, packages, exclude=None, altSearch='no'):
         distance = 50
         pack = Package()
@@ -101,9 +102,11 @@ class Truck:
                     elif hashMap.search(note[26:]) not in buddyPackages:
                         buddyPackages.append(hashMap.search(note[26:]))
 
-        # The code in this if statement executes if this is the for the first delivery trip.
+        # The code in this if statement executes if this is for the first delivery trip.
         if self.numLoads <= 1:
             self.truck1Packages.append(hashMap.search('34'))
+            self.firstTripPackages.append(hashMap.search('34'))
+            hashMap.search('34').setDeliveryStatus('en route')
 
             # Loops until the maximum allowed amount of packages are loaded on truck 1.
             while len(self.truck1Packages) < 16:
@@ -161,7 +164,6 @@ class Truck:
                 self.truck2Packages.append(package)
                 self.firstTripPackages.append(package)
                 start = package.getPackageAddress()
-                # hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
 
         else:
@@ -185,7 +187,7 @@ class Truck:
                     exclude.append(package)
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck2Packages.append(package)
-                self.secondTripPackages.append(column[1])
+                self.secondTripPackages.append(package)
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
 
@@ -197,7 +199,6 @@ class Truck:
                     package = self.getMinDistance(start, hashMap.getTable(), exclude)
                 self.truck1Packages.append(package)
                 self.secondTripPackages.append(package)
-                # hashMap.remove(package.getPackageID())
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
 
@@ -212,8 +213,9 @@ class Truck:
         while len(self.truck1Packages) > 0:
             # Updates the package that initally had the wrong address listed to the correct delivery address. The update
             # happens after WGU finds the correct address.
-            if self.currentTime > self.wrongAddress and self.addressChanged == False:
-                pack = hashMap.search(9)
+            if (self.currentTime + T1TravelTime) > self.wrongAddress and self.addressChanged == False:
+                print('here')
+                pack = hashMap.search('9')
                 pack.setPackageAddress('410 S State St')
                 self.addressChanged = True
             package = self.getMinDistance(start, self.truck1Packages, None, 'delivery')
