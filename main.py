@@ -74,6 +74,8 @@ truck.deliverPackages(startingPoint, myHash)
 # gives the user directions for operating the UI.
 print('WGUPS Routing Program')
 print('Route was completed in', truck.getTotalDistance(), 'miles')
+print('Truck 1 traveled', truck.getT1Distance())
+print('Truck 2 traveled', truck.getT2Distance())
 userInput = input("""
 Please select an option below to being or type 'quit' to quit:
     Type '1' to get info for all packages at a particular time

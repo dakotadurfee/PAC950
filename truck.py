@@ -265,6 +265,12 @@ class Truck:
     def getTotalDistance(self):
         return self.traveledT1 + self.traveledT2
 
+    def getT1Distance(self):
+        return self.traveledT1
+
+    def getT2Distance(self):
+        return self.traveledT2
+
     # Returns the time it takes the trucks to go a given distance.
     def timeToDeliver(self, distance):
         time = timedelta(hours=distance / 18)
