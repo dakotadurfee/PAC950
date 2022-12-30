@@ -214,7 +214,6 @@ class Truck:
             # Updates the package that initally had the wrong address listed to the correct delivery address. The update
             # happens after WGU finds the correct address.
             if (self.currentTime + T1TravelTime) > self.wrongAddress and self.addressChanged == False:
-                print('here')
                 pack = hashMap.search('9')
                 pack.setPackageAddress('410 S State St')
                 self.addressChanged = True
