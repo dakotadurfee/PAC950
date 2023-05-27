@@ -4,4 +4,6 @@ Purpose: This program was made to plan truck routes for a package delivery servi
 
 Author: Dakota Durfee
 
+Date: 12-22-2022
+
 Contaact information: dakotadurfee23@gmail.com | 208-670-1335
