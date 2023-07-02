@@ -27,18 +27,18 @@ class Truck:
 
     # This method returns the distance between two addresses
     def getDistanceBetween(self, address1, address2):
-
         d = self.distanceData[self.addressData.index(address1)][self.addressData.index(address2)]
         if d == '':
             d = self.distanceData[self.addressData.index(address2)][self.addressData.index(address1)]
 
         return float(d)
 
-    # This method uses the nearest neighbor approach to find the next package to be loaded or delivered. It starts with
-    # a package object, a distance and a starting point which would be the hub. It loops through every package and assigns
-    # the package object to the current package if the distance from the starting point to the delivery address is shorter
-    # than the already assigned distance. It will set the new starting point as the package's delivery address, and update
-    # the distance. The package with the closest delivery address from the starting point is returned.
+    # This method uses the nearest neighbor approach to find the next package to be loaded or delivered. It starts
+    # with a package object, a distance and a starting point which would be the hub. It loops through every package
+    # and assigns the package object to the current package if the distance from the starting point to the delivery
+    # address is shorter than the already assigned distance. It will set the new starting point as the package's
+    # delivery address, and update the distance. The package with the closest delivery address from the starting
+    # point is returned.
     def getMinDistance(self, startingPoint, packages, exclude=None, altSearch='no'):
         distance = 50
         pack = Package()
@@ -207,12 +207,12 @@ class Truck:
                 package.setDeliveryStatus('en route')
                 start = package.getPackageAddress()
 
-    # This method optimally delivers the packages loaded on trucks 1 and 2. It also keeps track of the time it takes for
-    # each truck to complete its route and the distance each truck traveled.
-    # In each while loop the getMinDistance method is called to find the next closest package delivery on the truck. Since
-    # each truck can only have a maximum of 16 packages loaded onto them, the space-time complexity would be O(16) or O(1).
-    # The algorithm used in the getMinDistance method has a space-time complexity of O(n) which makes the actual space-time
-    # complexity of the while loops O(n).
+    # This method optimally delivers the packages loaded on trucks 1 and 2. It also keeps track of the time it takes
+    # for each truck to complete its route and the distance each truck traveled. In each while loop the
+    # getMinDistance method is called to find the next closest package delivery on the truck. Since each truck can
+    # only have a maximum of 16 packages loaded onto them, the space-time complexity would be O(16) or O(1). The
+    # algorithm used in the getMinDistance method has a space-time complexity of O(n) which makes the actual
+    # space-time complexity of the while loops O(n).
     def deliverPackages(self, startingPoint, hashMap):
         start = startingPoint
         # Keeps track of how long it takes for both trucks to complete their routes.
