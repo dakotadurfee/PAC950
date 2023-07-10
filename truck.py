@@ -240,26 +240,27 @@ class Truck:
         T2TravelTime = timedelta(hours=0)
         # Loops until all packages on truck 1 are delivered.
         while len(self.truck1Packages) > 0:
-            # Updates the package that initially had the wrong address listed to the correct delivery address. The update
-            # happens after WGU finds the correct address.
+            # Updates the package that initially had the wrong address listed to the correct delivery address. The
+            # update happens after WGU finds the correct address.
             if (self.currentTime + T1TravelTime) > self.wrongAddress and self.addressChanged is False:
                 pack = hashMap.search('9')
                 pack.setPackageAddress('410 S State St')
                 self.addressChanged = True
-            # Gets next package to be delivered and distance to deliver that package.
-            package = self.getMinDistance(start, self.truck1Packages, None, 'delivery')
+            i = 0
+            # Updates the next package to be delivered and the time to deliver that package.
+            package = self.truck1Packages[i]
             distance = self.getDistanceBetween(start, package.getPackageAddress())
 
-            # Updates the distance and time traveled by truck 1.
+            # Updates the time and distance traveled by truck 1.
             self.traveledT1 += distance
             T1TravelTime += self.timeToDeliver(distance)
 
-            # Removes package from truck 1 and updates the delivery status.
+            # Removes package from truck 1 and updates delivery status of package.
             self.truck1Packages.remove(package)
             deliveryTime = 'Delivered at ' + str(self.currentTime + T1TravelTime)
             package.setDeliveryStatus(deliveryTime)
 
-            # Sets the address truck 1 is currently at.
+            # Updates address truck is currently at.
             start = package.getPackageAddress()
 
         # Records the time and distance it takes to get from the last package delivered on truck 1 back to the hub.
@@ -269,8 +270,9 @@ class Truck:
 
         # Loops until all packages on truck 2 are delivered.
         while len(self.truck2Packages) > 0:
+            i = 0
             # Gets next package to be delivered and distance to deliver that package.
-            package = self.getMinDistance(start, self.truck2Packages, None, 'delivery')
+            package = self.truck2Packages[i]
             distance = self.getDistanceBetween(start, package.getPackageAddress())
 
             # Updates the distance and time traveled by truck 2.
