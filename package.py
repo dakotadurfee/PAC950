@@ -1,4 +1,5 @@
-from hashTable import chainingHash
+
+
 # Stores the information of a package
 class Package:
     def __init__(self, packageID=0, deliveryAddress=None, deliveryDeadline=None, deliveryCity=None, deliveryZip=None,

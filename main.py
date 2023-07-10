@@ -29,7 +29,8 @@ def loadPackageData():
             myHash.insert(packageID, P)
 
 
-# This method fills the distanceData array with distances read in from a csv file.
+# This method fills the distanceData array with distances read in from a csv file. These distances are used to find the
+# minimum distance between packages.
 # Space-time complexity is O(n)
 def loadDistanceData():
     with open('CSVs/distance.csv') as distanceCSV:
@@ -87,7 +88,7 @@ Please select an option below to being or type 'quit' to quit:
     Type '3' to get the info for a single package
 """)
 
-
+# Method to display package info for UI.
 def print_package_info(pack, status):
     if status == "hub":
         print(f'Package ID: {pack.getPackageID()} At the hub')
@@ -117,8 +118,8 @@ while userInput != 'quit':
 
         # If user entered time is after first delivery trip time and before second delivery trip time then all
         # packages that were on the second delivery run will be marked as 'At the hub'. Packages on the first
-        # delivery run are checked if they were delivered or en route at the user entered time. Space-time complexity
-        # is O(1)
+        # delivery run are checked if they were delivered or en route at the user entered time.
+        # Space-time complexity: O(1)
         elif truck.getFirstDeliveryTime() <= userTime < truck.getSecondDeliveryTime():
             for i in range(1, 41):
                 if myHash.search(i) in truck.getSecondTripPackages():
@@ -159,7 +160,7 @@ while userInput != 'quit':
             for i in range(1, 41):
                 user_package = myHash.search(i)
                 print_package_info(user_package, "delivered")
-    # If the user types '2' then they are promted to enter a package ID and a time.
+    # If the user types '2' then they are prompted to enter a package ID and a time.
     # Space-time complexity is O(1)
     elif userInput == '2':
         userPackage = input('Enter package ID number:')
@@ -207,6 +208,7 @@ while userInput != 'quit':
                 else:
                     print_package_info(package, "delivered")
 
+    # If user enters 3, they are prompted to enter package ID to display that package info.
     # Space-time complexity is O(1)
     elif userInput == '3':
         userPackage = input('Enter package ID number:')
@@ -215,6 +217,7 @@ while userInput != 'quit':
         print_package_info(package, "")
         print('Package delivery status:', package.getDeliveryStatus())
 
+    # Redisplays user options
     userInput = input("""
     Please select an option below to being or type 'quit' to quit:
         Type '1' to get info for all packages at a particular time

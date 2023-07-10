@@ -8,24 +8,40 @@ from package import Package
 
 class Truck:
     def __init__(self, distanceData, addressData):
+        # Stores the packages to be delivered by trucks.
         self.truck1Packages = []
         self.truck2Packages = []
+
+        # Stores delivery addresses and distances between addresses.
         self.distanceData = distanceData
         self.addressData = addressData
+
+        # Distance traveled by each truck. Used for updating time.
         self.traveledT1 = 0
         self.traveledT2 = 0
+
+        # Used to keep track of how many loads have been delivered.
         self.numLoads = 0
+
+        # Used to update what time the trucks finish their loads.
         self.currentTime = timedelta(hours=8)
+
+        # Used to update Package 9 delivery address.
         self.wrongAddress = timedelta(hours=10, minutes=20)
         self.addressChanged = False
+
+        # Stores the times the trucks completed their loads.
         self.firstDeliveryTime = timedelta(hours=8)
         self.secondDeliveryTime = None
+
+        # Stores what packages were delivered during first and second trips.
         self.firstTripPackages = []
         self.secondTripPackages = []
+
         self.T1SecondTrip = []
         self.T2SecondTrip = []
 
-    # This method returns the distance between two addresses
+    # Returns the distance between two addresses
     def getDistanceBetween(self, address1, address2):
         d = self.distanceData[self.addressData.index(address1)][self.addressData.index(address2)]
         if d == '':
@@ -48,6 +64,7 @@ class Truck:
         if altSearch == 'no':
             for package in packages:
                 for p in package:
+                    # Checks to make sure package has not been delivered or loaded yet.
                     if p[1].getDeliveryStatus() == 'at the hub':
                         if p[1].getPackageAddress() != start and exclude is None:
                             if float(self.getDistanceBetween(startingPoint, p[1].getPackageAddress())) < float(
@@ -59,10 +76,12 @@ class Truck:
                                     distance):
                                 pack = p[1]
                                 distance = self.getDistanceBetween(start, p[1].getPackageAddress())
+
         # This case has a space-time complexity of O(n)
         elif altSearch == 'yes':
-            if exclude == None:
+            if exclude is None:
                 for package in packages:
+                    # Checks to make sure package has not been delivered or loaded yet.
                     if package.getDeliveryStatus() == 'at the hub':
                         if float(self.getDistanceBetween(start, package.getPackageAddress())) < float(distance):
                             pack = package
@@ -70,6 +89,7 @@ class Truck:
 
             else:
                 for package in packages:
+                    # Checks to make sure package has not been delivered or loaded yet.
                     if package.getDeliveryStatus() == 'at the hub':
                         if package not in exclude and float(
                                 self.getDistanceBetween(start, package.getPackageAddress())) < float(distance):
@@ -84,12 +104,12 @@ class Truck:
         return pack
 
     # This method tries to optimally load each truck. The only package that is manually loaded is package ID: 34.
-    # This package is manually loaded to ensure each package is delivered by their deadline.
-    # The space-time complexities of this method depend on the getMinDistance method. The only time the space-time complexity
-    # is different than O(N^2) when getMinDistance is called is when the buddy packages are loaded. The space-time complexity
-    # for that segment is O(N). If the package with the next closest delivery address cannot be loaded/delivered based
-    # off deadlines/special notes then the program will call getMinDistance until an acceptable package is returned. This
-    # will slow down the runtime of the program.
+    # This package is manually loaded to ensure each package is delivered by their deadline. The space-time
+    # complexities of this method depend on the getMinDistance method. The only time the space-time complexity is
+    # different than O(N^2) when getMinDistance is called is when the buddy packages are loaded. The space-time
+    # complexity for that segment is O(N). If the package with the next closest delivery address cannot be
+    # loaded/delivered based off deadlines/special notes then the program will call getMinDistance until an
+    # acceptable package is returned. This will slow down the runtime of the program.
     def loadTruck(self, startingPoint, hashMap):
         start = startingPoint
         buddyPackages = []
@@ -107,7 +127,7 @@ class Truck:
                     elif hashMap.search(note[26:]) not in buddyPackages:
                         buddyPackages.append(hashMap.search(note[26:]))
 
-        # The code in this if statement executes if this is for the first delivery trip.
+        # This statement executes if this is for the first delivery trip.
         if self.numLoads <= 1:
             self.truck1Packages.append(hashMap.search('34'))
             self.firstTripPackages.append(hashMap.search('34'))
@@ -220,19 +240,26 @@ class Truck:
         T2TravelTime = timedelta(hours=0)
         # Loops until all packages on truck 1 are delivered.
         while len(self.truck1Packages) > 0:
-            # Updates the package that initally had the wrong address listed to the correct delivery address. The update
+            # Updates the package that initially had the wrong address listed to the correct delivery address. The update
             # happens after WGU finds the correct address.
-            if (self.currentTime + T1TravelTime) > self.wrongAddress and self.addressChanged == False:
+            if (self.currentTime + T1TravelTime) > self.wrongAddress and self.addressChanged is False:
                 pack = hashMap.search('9')
                 pack.setPackageAddress('410 S State St')
                 self.addressChanged = True
+            # Gets next package to be delivered and distance to deliver that package.
             package = self.getMinDistance(start, self.truck1Packages, None, 'delivery')
             distance = self.getDistanceBetween(start, package.getPackageAddress())
+
+            # Updates the distance and time traveled by truck 1.
             self.traveledT1 += distance
             T1TravelTime += self.timeToDeliver(distance)
+
+            # Removes package from truck 1 and updates the delivery status.
             self.truck1Packages.remove(package)
             deliveryTime = 'Delivered at ' + str(self.currentTime + T1TravelTime)
             package.setDeliveryStatus(deliveryTime)
+
+            # Sets the address truck 1 is currently at.
             start = package.getPackageAddress()
 
         # Records the time and distance it takes to get from the last package delivered on truck 1 back to the hub.
@@ -242,20 +269,27 @@ class Truck:
 
         # Loops until all packages on truck 2 are delivered.
         while len(self.truck2Packages) > 0:
+            # Gets next package to be delivered and distance to deliver that package.
             package = self.getMinDistance(start, self.truck2Packages, None, 'delivery')
             distance = self.getDistanceBetween(start, package.getPackageAddress())
+
+            # Updates the distance and time traveled by truck 2.
             self.traveledT2 += distance
             T2TravelTime += self.timeToDeliver(distance)
+
+            # Removes package from truck 1 and updates the delivery status.
             self.truck2Packages.remove(package)
             deliveryTime = 'Delivered at ' + str(self.currentTime + T2TravelTime)
             package.setDeliveryStatus(deliveryTime)
+
+            # Sets the address truck 2 is currently at.
             start = package.getPackageAddress()
 
-        # Records the time and distance
+        # Records the time and distance traveled by truck 2.
         self.traveledT2 += self.getDistanceBetween(start, startingPoint)
         T2TravelTime += self.timeToDeliver(distance)
 
-        # Changes the global time based off which truck took longer to deliver it's packages.
+        # Changes the global time based off which truck took longer to deliver its packages.
         if T1TravelTime > T2TravelTime:
             self.currentTime += T1TravelTime
         else:
@@ -265,9 +299,11 @@ class Truck:
     def getTotalDistance(self):
         return self.traveledT1 + self.traveledT2
 
+    # Returns distance traveled by truck 1.
     def getT1Distance(self):
         return self.traveledT1
 
+    # Returns distance traveled by truck 2.
     def getT2Distance(self):
         return self.traveledT2
 

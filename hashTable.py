@@ -1,5 +1,5 @@
-# This class creates a chaining hash table to store all the packages based off package ID.
-# There is no need for collision management because each bucket is a list and can hold many packages.
+# The chainingHash class creates a chaining hash table to store all the packages with package ID as the key and package
+# object as value. There is no need for collision management because each bucket is a list and can hold many packages.
 class chainingHash:
     def __init__(self):
         # initialize the hash table with empty bucket list entries.
